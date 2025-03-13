@@ -1,0 +1,32 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>TP3- AymericJak</title>
+	</head>
+
+	<body>
+		<div class="container">
+			<h1>TP3- Akka</h1>
+
+			<h2>Initialisation des acteurs Akka</h2>
+			<a th:href="@{/akka/init}">Initialiser les données</a>
+			<p th:text="${message}"></p>
+
+			<h2>Fichier à analyser</h2>
+			<input type="file" name="file-input" id="file-input">
+			<button type="submit" name="submit-file-submit" id="submit-file-submit">Submit file</button>
+
+			<h2>Résultat</h2>
+			<p>Mot : </p>
+			<p>Nombre d'occurences : </p>
+			<label for="search-word-input">Mot : </label>
+			<input type="text" name="search-word-input" id="search-word-input">
+
+			<button type="submit" name="search-word-submit" id="search-word-submit">Submit file</button>
+		</div>
+
+	</body>
+</html>
+
+
