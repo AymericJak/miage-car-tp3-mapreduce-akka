@@ -5,13 +5,18 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 @Service
 public class AkkaService {
     private ActorSystem actorSystem;
     private ActorRef[] mappers;
     private ActorRef[] reducers;
 
-    public AkkaService() {}
+    public AkkaService() {
+    }
 
 
     public ActorSystem getActorSystem() {
@@ -42,6 +47,28 @@ public class AkkaService {
             System.out.println("Système Akka initialisé avec " +
                     this.mappers.length + " Mappers et " +
                     this.reducers.length + " Reducers.");
+        }
+    }
+
+    public void processFile(File file) {
+        if (actorSystem == null || mappers == null) {
+            System.out.println("Système Akka non initialisé !!!");
+            return;
+        }
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+            int index = 0;
+
+            while (line != null) {
+                mappers[index % mappers.length].tell(line, ActorRef.noSender());
+                line = reader.readLine();
+                index++;
+            }
+            System.out.println("Fin de l'envoi aux mappers :)");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 }

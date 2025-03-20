@@ -2,10 +2,12 @@ package fr.univlille.mastermiage.car.miagecartp3mapreduceakka.akka;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.File;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/akka")
@@ -37,4 +39,19 @@ public class AkkaController {
         }
         return "redirect:/akka";
     }
+
+    @PostMapping("/process-file-mapping")
+    public String processFile(@RequestParam("file-input") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("fileMessage", "Aucun fichier envoyé.");
+            return "redirect:/akka";
+
+        }
+        File tempFile = File.createTempFile("temp", ".txt");
+        file.transferTo(tempFile);
+        akkaService.processFile(tempFile);
+        redirectAttributes.addFlashAttribute("fileMessage", "Fichier traité");
+        return "redirect:/akka";
+    }
+
 }

@@ -14,8 +14,11 @@
 			<p th:text="${message}"></p>
 
 			<h2>Fichier à analyser</h2>
-			<input type="file" name="file-input" id="file-input">
-			<button type="submit" name="submit-file-submit" id="submit-file-submit">Submit file</button>
+			<form action="/akka/process-file-mapping" method="post" enctype="multipart/form-data">
+				<input type="file" name="file-input" id="file-input">
+				<button type="submit" name="submit-file-submit" id="submit-file-submit">Submit file</button>
+				<p th:text="${fileMessage}"></p>
+			</form>
 
 			<h2>Résultat</h2>
 			<p>Mot : </p>

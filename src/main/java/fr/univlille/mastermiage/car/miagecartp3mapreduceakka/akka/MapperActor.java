@@ -6,6 +6,8 @@ public class MapperActor extends UntypedActor {
 
     @Override
     public void onReceive(Object message) {
-        System.out.println("Mapper reçu : " + message);
+        if (message instanceof String line) {
+            System.out.println("Mapper " + getSelf().path().name() + " traite : " + line);
+        }
     }
 }
