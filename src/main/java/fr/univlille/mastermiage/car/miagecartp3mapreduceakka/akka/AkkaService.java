@@ -35,11 +35,12 @@ public class AkkaService {
         if (this.actorSystem == null) {
             this.actorSystem = ActorSystem.create("MapReduceSystem");
             this.mappers = new ActorRef[3];
+            this.reducers = new ActorRef[2];
+
             for (int i = 0; i < 3; i++) {
-                mappers[i] = actorSystem.actorOf(Props.create(MapperActor.class), "mapper" + i);
+                mappers[i] = actorSystem.actorOf(Props.create(MapperActor.class, this), "mapper" + i);
             }
 
-            this.reducers = new ActorRef[2];
             for (int i = 0; i < 2; i++) {
                 reducers[i] = actorSystem.actorOf(Props.create(ReduceActor.class), "reducer" + i);
             }
