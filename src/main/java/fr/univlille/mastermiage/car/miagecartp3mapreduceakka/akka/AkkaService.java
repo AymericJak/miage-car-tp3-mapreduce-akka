@@ -89,19 +89,17 @@ public class AkkaService {
         GetCountMessage getCountMessage = new GetCountMessage(word);
 
         try {
-            Duration timeout = Duration.create(3, TimeUnit.SECONDS);
-
             for (ActorRef reducer : reducers) {
-                Future<Object> future = Patterns.ask(reducer, getCountMessage, 3000);
+                Future<Object> future = Patterns.ask(reducer, getCountMessage, 1000);
 
-                int count = (Integer) Await.result(future, timeout);
+                int count = (Integer) Await.result(future, Duration.create(1, TimeUnit.SECONDS));
                 total += count;
             }
 
         } catch (Exception e) {
             e.printStackTrace();
+            return 0;
         }
-
         return total;
     }
 }
