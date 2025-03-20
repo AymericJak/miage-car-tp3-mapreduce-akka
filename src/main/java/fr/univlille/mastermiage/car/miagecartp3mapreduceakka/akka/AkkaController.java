@@ -54,4 +54,18 @@ public class AkkaController {
         return "redirect:/akka";
     }
 
+    @PostMapping("/search-word")
+    public String searchWord(@RequestParam("search-word-input") String searchWord,
+                             RedirectAttributes redirectAttributes) {
+        if (searchWord == null || searchWord.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("searchMessage", "Aucun mot fourni.");
+            return "redirect:/akka";
+        }
+
+        int totalOccurrences = akkaService.countOccurrences(searchWord);
+        redirectAttributes.addFlashAttribute("searchMessage",
+                "Le mot '" + searchWord + "' apparaît " + totalOccurrences + " fois.");
+
+        return "redirect:/akka";
+    }
 }

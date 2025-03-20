@@ -3,11 +3,18 @@ package fr.univlille.mastermiage.car.miagecartp3mapreduceakka.akka;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
+import akka.pattern.Patterns;
 import org.springframework.stereotype.Service;
+import scala.concurrent.Await;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+
+import scala.concurrent.Future;
+import scala.concurrent.duration.Duration;
+
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class AkkaService {
@@ -71,5 +78,30 @@ public class AkkaService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int countOccurrences(String word) {
+        if (reducers == null) {
+            System.out.println("Pas de reducers disponibles !!!");
+            return 0;
+        }
+        int total = 0;
+        GetCountMessage getCountMessage = new GetCountMessage(word);
+
+        try {
+            Duration timeout = Duration.create(3, TimeUnit.SECONDS);
+
+            for (ActorRef reducer : reducers) {
+                Future<Object> future = Patterns.ask(reducer, getCountMessage, 3000);
+
+                int count = (Integer) Await.result(future, timeout);
+                total += count;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return total;
     }
 }

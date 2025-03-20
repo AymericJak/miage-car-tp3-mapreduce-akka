@@ -21,12 +21,13 @@
 			</form>
 
 			<h2>Résultat</h2>
-			<p>Mot : </p>
-			<p>Nombre d'occurences : </p>
-			<label for="search-word-input">Mot : </label>
-			<input type="text" name="search-word-input" id="search-word-input">
+			<p th:text="${searchMessage}"></p>
 
-			<button type="submit" name="search-word-submit" id="search-word-submit">Submit file</button>
+			<form action="/akka/search-word" method="post">
+				<label for="search-word-input">Mot :</label>
+				<input type="text" name="search-word-input" id="search-word-input" />
+				<button type="submit">Rechercher</button>
+			</form>
 		</div>
 
 	</body>

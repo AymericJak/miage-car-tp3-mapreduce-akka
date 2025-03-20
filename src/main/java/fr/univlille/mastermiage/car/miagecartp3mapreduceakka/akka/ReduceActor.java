@@ -13,11 +13,17 @@ public class ReduceActor extends UntypedActor {
         if (message instanceof String word) {
             wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
             System.out.println("Reducer " + getSelf().path().name() + " → " + word + " : " + wordCounts.get(word));
+        } else if (message instanceof GetCountMessage getCountMessage) {
+            int count = wordCounts.getOrDefault(getCountMessage.getWord(), 0);
+            getSender().tell(count, getSelf());
         }
-
     }
 
     public Map<String, Integer> getWordCounts() {
         return wordCounts;
+    }
+
+    public int getCount(String word) {
+        return wordCounts.getOrDefault(word, 0);
     }
 }
